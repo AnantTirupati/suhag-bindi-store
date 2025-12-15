@@ -7,9 +7,9 @@ interface PublicLayoutProps {
 
 export function PublicLayout({ children }: PublicLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-background text-foreground">
+    <div className="min-h-screen flex flex-col font-sans bg-background text-foreground w-full overflow-x-hidden">
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 w-full">
         {children}
       </main>
       <Footer />

@@ -17,8 +17,8 @@ export default function Products() {
 
   return (
     <PublicLayout>
-      <div className="bg-background min-h-screen py-12">
-        <div className="container px-4">
+      <div className="bg-background min-h-screen py-12 w-full">
+        <div className="container px-4 mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4">Our Collections</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -27,21 +27,23 @@ export default function Products() {
           </div>
 
           <Tabs defaultValue={activeCategory} onValueChange={setActiveCategory} className="w-full">
-            <div className="flex justify-center mb-10 overflow-x-auto pb-4">
-              <TabsList className="bg-white border h-auto p-1 gap-2 rounded-full shadow-sm">
-                <TabsTrigger value="all" className="rounded-full px-6 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-medium transition-all">
-                  All Items
-                </TabsTrigger>
-                {CATEGORIES.map(cat => (
-                  <TabsTrigger 
-                    key={cat.id} 
-                    value={cat.id}
-                    className="rounded-full px-6 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-medium transition-all"
-                  >
-                    {cat.name}
+            <div className="mb-10 overflow-x-auto pb-4 scrollbar-hide md:scrollbar-default -mx-4 px-4">
+              <div className="flex justify-start xl:justify-center min-w-max">
+                <TabsList className="bg-white border h-auto p-1 gap-2 rounded-full shadow-sm shrink-0">
+                  <TabsTrigger value="all" className="rounded-full px-6 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-medium transition-all whitespace-nowrap">
+                    All Items
                   </TabsTrigger>
-                ))}
-              </TabsList>
+                  {CATEGORIES.map(cat => (
+                    <TabsTrigger 
+                      key={cat.id} 
+                      value={cat.id}
+                      className="rounded-full px-6 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-medium transition-all whitespace-nowrap"
+                    >
+                      {cat.name}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </div>
             </div>
 
             <TabsContent value={activeCategory} className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
