@@ -1,7 +1,8 @@
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useCart } from "@/hooks/use-cart";
+import { Check } from "lucide-react";
 
 interface Product {
   id: number;
@@ -9,55 +10,72 @@ interface Product {
   category: string;
   image: string;
   description: string;
-  featured?: boolean;
 }
 
 interface ProductCardProps {
   product: Product;
-   highlighted?: boolean;
+  highlighted?: boolean;
 }
 
-
-
-
 export function ProductCard({ product, highlighted }: ProductCardProps) {
+  const { addToCart } = useCart();
+  const [added, setAdded] = useState(false);
+
   useEffect(() => {
-  if (highlighted) {
-    console.log("✅ SHOULD HIGHLIGHT", product.id);
-  }
-}, [highlighted]);
-     console.log("ProductCard rendered", product.id, highlighted);
+    if (highlighted) {
+      console.log("Highlighted:", product.id);
+    }
+  }, [highlighted, product.id]);
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      description: product.description,
+    });
+
+    // trigger animation
+    setAdded(true);
+    setTimeout(() => setAdded(false), 900);
+  };
+
   return (
-    <div id={`product-${product.id}`}>
-      <Card
-        className={`transition-all duration-300 bg-white
-          ${highlighted ? "ring-4 ring-primary shadow-xl scale-[1.02]" : "shadow-sm"}
-        `}
-      >
-        {/* INNER WRAPPER HANDLES OVERFLOW */}
-        <div className="group overflow-hidden">
-          {/* IMAGE */}
-          <div className="relative aspect-[4/5] bg-gray-50 flex items-center justify-center">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
+    <Card className="bg-white shadow-sm">
+      <div className="p-4">
 
-          {/* TITLE */}
-          <div className="p-4 pb-0">
-            <h3 className="font-serif text-lg font-bold">{product.name}</h3>
-          </div>
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-full h-48 object-contain"
+        />
 
-          {/* DESCRIPTION */}
-          <div className="p-4 pt-2">
-            <p className="text-sm text-muted-foreground line-clamp-2">
-              {product.description}
-            </p>
-          </div>
-        </div>
-      </Card>
-    </div>
+        <h3 className="font-serif text-lg font-bold mt-2">
+          {product.name}
+        </h3>
+
+        <p className="text-sm text-muted-foreground mt-1">
+          {product.description}
+        </p>
+
+        {/* ADD TO CART BUTTON */}
+        <Button
+          onClick={handleAddToCart}
+          className={`w-full mt-3 transition-all duration-300
+            ${added ? "bg-green-600 hover:bg-green-600 scale-105" : ""}
+          `}
+          disabled={added}
+        >
+          {added ? (
+            <span className="flex items-center gap-2 animate-fade-in">
+              <Check className="h-4 w-4" /> Added
+            </span>
+          ) : (
+            "Add to Cart"
+          )}
+        </Button>
+
+      </div>
+    </Card>
   );
 }
