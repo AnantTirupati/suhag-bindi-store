@@ -11,6 +11,11 @@ export default function CartPage() {
     decreaseQty,
   } = useCart();
 
+  const totalAmount = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
   if (cart.length === 0) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
@@ -38,8 +43,13 @@ export default function CartPage() {
 
             <div className="flex-1">
               <h3 className="font-semibold">{item.name}</h3>
+
               <p className="text-sm text-muted-foreground">
                 {item.description}
+              </p>
+
+              <p className="font-semibold mt-1">
+                ₹{item.price.toLocaleString("en-IN")}
               </p>
 
               <div className="flex items-center gap-2 mt-2">
@@ -57,6 +67,12 @@ export default function CartPage() {
               </div>
             </div>
 
+            <div className="text-right min-w-[100px]">
+              <p className="font-semibold">
+                ₹{(item.price * item.quantity).toLocaleString("en-IN")}
+              </p>
+            </div>
+
             <Button
               size="icon"
               variant="ghost"
@@ -68,7 +84,11 @@ export default function CartPage() {
         ))}
       </div>
 
-      <div className="mt-8 flex justify-end">
+      <div className="mt-8 flex justify-between items-center">
+        <div className="text-xl font-bold">
+          Total: ₹{totalAmount.toLocaleString("en-IN")}
+        </div>
+
         <Button size="lg">
           Proceed to Checkout
         </Button>

@@ -10,6 +10,8 @@ interface Product {
   category: string;
   image: string;
   description: string;
+  price: number;
+  quantity: number;
 }
 
 interface ProductCardProps {
@@ -33,9 +35,10 @@ export function ProductCard({ product, highlighted }: ProductCardProps) {
       name: product.name,
       image: product.image,
       description: product.description,
+      price: product.price,
+      quantity: 1,
     });
 
-    // trigger animation
     setAdded(true);
     setTimeout(() => setAdded(false), 900);
   };
@@ -43,7 +46,6 @@ export function ProductCard({ product, highlighted }: ProductCardProps) {
   return (
     <Card className="bg-white shadow-sm">
       <div className="p-4">
-
         <img
           src={product.image}
           alt={product.name}
@@ -54,11 +56,15 @@ export function ProductCard({ product, highlighted }: ProductCardProps) {
           {product.name}
         </h3>
 
+        {/* PRICE */}
+        <p className="text-lg font-semibold text-gray-800 mt-1">
+          ₹{(product.price ?? 0).toLocaleString("en-IN")}
+        </p>
+
         <p className="text-sm text-muted-foreground mt-1">
           {product.description}
         </p>
 
-        {/* ADD TO CART BUTTON */}
         <Button
           onClick={handleAddToCart}
           className={`w-full mt-3 transition-all duration-300
@@ -74,7 +80,6 @@ export function ProductCard({ product, highlighted }: ProductCardProps) {
             "Add to Cart"
           )}
         </Button>
-
       </div>
     </Card>
   );
